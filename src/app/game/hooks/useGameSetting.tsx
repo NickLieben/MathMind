@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react"
 import { Problem } from "../types/Problem"
 import GenerateProblems from "../utils/generateProblems"
-import useSaveGame from "./useSaveGame"
+import useControllGame from "../../hooks/useControllGame"
 
 type GameState = "ready" | "playing" | "finished"
 
@@ -18,9 +18,7 @@ export default function useUser() {
   const [userAnswer, setUserAnswer] = useState("")
   const inputRef = useRef<HTMLInputElement>(null)
 
-  console.log(problems, 'problems')
-
-  const { saveGame } = useSaveGame()
+  const { saveGame, setUser, user } = useControllGame()
   
 
   const startGame = () => {
@@ -101,5 +99,7 @@ export default function useUser() {
     handleSubmit,
     MAX_PROBLEMS,
     inputRef,
+    setUser,
+    user,
   }
 }

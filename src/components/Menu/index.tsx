@@ -14,7 +14,6 @@ const Menu = () => {
   const [menuStatus, setMenuStatus] = useState<MenuProps>("jogar");
 
   const SubMenu = ({ menuStatus }: { menuStatus: MenuProps }) => {
-
     return (
       <div className="grid">
         {
@@ -28,7 +27,6 @@ const Menu = () => {
         <span onClick={() => setSubMenu(false)} className="mt-8 text-2xl font-bold text-centerc">Voltar</span>
       </div>
     )
-  
   }
 
   return (
@@ -50,15 +48,13 @@ const Menu = () => {
             >
               Jogar
             </span>
-            <span 
-              className="text-2xl font-bold text-centerc"
-              onClick={() => {
-                setSubMenu(true);
-                setMenuStatus("jogar");
-              }}
-            >
-              Ranking
-            </span>
+            <Link href="/ranking">
+              <span 
+                className="text-2xl font-bold text-centerc"
+              >
+                Ranking
+              </span>
+            </Link>
           </div>
         )
       }
