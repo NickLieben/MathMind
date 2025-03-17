@@ -18,7 +18,9 @@ export default function GamePage() {
     gameTime,
     gameState,
     userAnswer,
-    setUserAnswer
+    setUserAnswer,
+    setUser,
+    user
   } = useGameSetting()
 
 
@@ -28,6 +30,20 @@ export default function GamePage() {
         <Card className="p-8 text-center">
           <h1 className="text-2xl font-bold mb-6">Teste de Matemática</h1>
           <p className="mb-6">Responda 10 problemas de adição o mais rápido possível.</p>
+
+          <div className=" mb-6">
+            <span className="font-bold">Insira seu nome: </span>
+            
+            <Input
+              type="text"
+              value={user}
+              onChange={(e) => setUser(e.target.value)}
+              className="text-center text-2xl font-bold"
+              autoFocus
+              required
+            />
+          </div>
+          
           <Button onClick={startGame} >
             Começar
           </Button>
@@ -102,6 +118,9 @@ export default function GamePage() {
           <div className="flex justify-center">
             <Button onClick={resetGame} >
               Tentar Novamente
+            </Button>
+            <Button href={"/ranking"} >
+              Ranking
             </Button>
           </div>
         </div>
