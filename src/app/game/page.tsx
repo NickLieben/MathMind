@@ -4,9 +4,17 @@ import { Button, Card, Input } from "@mui/material";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import CloseIcon from "@mui/icons-material/Close";
 import useGameSetting from "./hooks/useGameSetting";
+import { useSearchParams } from "next/navigation";
+import { OPERATIONS } from "../constants/operations";
+import { OperationsType } from "../types/operations";
 
 
 export default function GamePage() {
+  const searchParams = useSearchParams();
+  const gameType: OperationsType = searchParams.get("gameType") as OperationsType ?? "addition";
+
+  const operation = OPERATIONS.find((operation) => operation.id === gameType);
+  
   const { 
     startGame,
     handleSubmit,
@@ -21,15 +29,14 @@ export default function GamePage() {
     setUserAnswer,
     setUser,
     user
-  } = useGameSetting()
-
+  } = useGameSetting(gameType);
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen p-4">
       {gameState === "ready" && (
         <Card className="p-8 text-center">
           <h1 className="text-2xl font-bold mb-6">Teste de Matemática</h1>
-          <p className="mb-6">Responda 10 problemas de adição o mais rápido possível.</p>
+          <p className="mb-6">Responda 10 problemas de {operation?.title.toLocaleLowerCase()} o mais rápido possível.</p>
 
           <div className=" mb-6">
             <span className="font-bold">Insira seu nome: </span>
@@ -59,7 +66,7 @@ export default function GamePage() {
           <Card className="p-8 w-full mb-6">
             <form onSubmit={handleSubmit} className="flex flex-col items-center">
               <div className="text-3xl font-bold mb-6">
-                {problems[currentProblemIndex].num1} + {problems[currentProblemIndex].num2} =
+                {`${problems[currentProblemIndex].num1} ${operation?.operator} ${problems[currentProblemIndex].num2} =`}
               </div>
 
               <Input
@@ -97,7 +104,7 @@ export default function GamePage() {
                     }`}
                   >
                     <div>
-                      {problem.num1} + {problem.num2} = {problem.userAnswer}
+                      {`${problem.num1} ${operation?.operator} ${problem.num2} = ${problem.userAnswer}`}
                     </div>
                     <div className="flex items-center">
                       {problem.isCorrect ? (

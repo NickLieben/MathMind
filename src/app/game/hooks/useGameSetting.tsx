@@ -2,12 +2,12 @@ import { useEffect, useRef, useState } from "react"
 import { Problem } from "../types/Problem"
 import GenerateProblems from "../utils/generateProblems"
 import useControllGame from "../../hooks/useControllGame"
+import { OperationsType } from "@/app/types/operations"
 
 type GameState = "ready" | "playing" | "finished"
 
-export default function useUser() {
+export default function useUser(gameType: OperationsType) {
   const MAX_PROBLEMS = 10
-  const MAX_NUMBER = 15
   
   const [problems, setProblems] = useState<Problem[]>([])
   const [currentProblemIndex, setCurrentProblemIndex] = useState(0)
@@ -22,7 +22,7 @@ export default function useUser() {
   
 
   const startGame = () => {
-    setProblems(GenerateProblems({maxProblems: MAX_PROBLEMS, maxNumber: MAX_NUMBER}))
+    setProblems(GenerateProblems({gameType, maxProblems: MAX_PROBLEMS}))
     setCurrentProblemIndex(0)
     setStartTime(Date.now())
     setGameState("playing")
@@ -32,13 +32,26 @@ export default function useUser() {
     }, 0)
   }
 
+  const getCorrectAnswer = (gameType: OperationsType, problem: Problem): number => {
+    switch (gameType) {
+      case "addition":
+        return problem.num1 + problem.num2
+      case "subtraction":
+        return problem.num1 - problem.num2
+      case "multiplication":
+        return problem.num1 * problem.num2
+      case "division":
+        return problem.num1 / problem.num2
+    }
+  }
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
 
     if (gameState !== "playing") return
 
     const currentProblem = problems[currentProblemIndex]
-    const correctAnswer = currentProblem.num1 + currentProblem.num2
+    const correctAnswer = getCorrectAnswer(gameType, currentProblem)
     const isCorrect = Number.parseInt(userAnswer) === correctAnswer
 
     // Update the current problem with user's answer

@@ -1,25 +1,19 @@
 "use client";
+import { OPERATIONS } from "@/app/constants/operations";
 import Link from "next/link";
 import { useState } from "react";
-type MenuProps = "jogar" | "ranking";
-
-const menu = {
-  jogar: ["Soma", "Subtração", "Multiplicação", "Divisão"],
-  ranking: ["Soma", "Subtração", "Multiplicação", "Divisão"],
-}
 
 
 const Menu = () => {
   const [subMenu, setSubMenu] = useState(false);
-  const [menuStatus, setMenuStatus] = useState<MenuProps>("jogar");
 
-  const SubMenu = ({ menuStatus }: { menuStatus: MenuProps }) => {
+  const SubMenu = () => {
     return (
       <div className="grid">
         {
-          menu[menuStatus].map((item: string, index: number) => (
-            <Link href="/game" key={index}>
-              <span className="text-2xl font-bold text-centerc">{item}</span>
+          OPERATIONS.map((item, index: number) => (
+            <Link href={`/game?gameType=${item.id}`} key={index}>
+              <span className="text-2xl font-bold text-centerc">{item.title}</span>
             </Link>
             
           ))
@@ -43,7 +37,6 @@ const Menu = () => {
               className="text-2xl font-bold text-centerc"
               onClick={() => {
                 setSubMenu(true);
-                setMenuStatus("jogar");
               }}
             >
               Jogar
@@ -60,7 +53,7 @@ const Menu = () => {
       }
       {
         subMenu && (
-          <SubMenu menuStatus={menuStatus}/>
+          <SubMenu />
         )
       }
 

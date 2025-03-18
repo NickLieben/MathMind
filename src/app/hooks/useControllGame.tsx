@@ -16,6 +16,11 @@ export default function useControllGame() {
 
   const saveGame = (problems: Problem[], gameTime: number) => {
     const points = getPoints(problems)
+
+    if(points === 0) {
+      return
+    }
+
     const ranking = localStorage.getItem("ranking")
     const gameToSave = {
       user,
